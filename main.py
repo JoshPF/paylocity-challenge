@@ -1,5 +1,4 @@
-from models.employee import Employee
-from models.base import Base
+from models.employee import Employee, Base
 from flask import Flask, request, jsonify
 from flask_api import status
 from sqlalchemy import create_engine, MetaData, func
@@ -26,13 +25,8 @@ Base.metadata.create_all(engine)
 
 @app.route('/api/employees/add', methods=['POST'])
 def add_employee():
+    response = {}
     try:
-        response = {}
-        try:
-            body = request.data
-            print(str(body), flush=True )
-        except Exception as e:
-            pass
         name = request.args.get('name')
         benefit_cost = request.args.get('benefit_cost')
         if name is None or benefit_cost is None:
@@ -40,6 +34,7 @@ def add_employee():
             response = jsonify(response)
             response.headers.add('Access-Control-Allow-Origin', '*')
             return response, status.HTTP_400_BAD_REQUEST
+
         e = Employee(name=name, benefit_cost=benefit_cost)
         session.add(e)
         session.commit()
@@ -57,13 +52,19 @@ def add_employee():
 @app.route('/api/employee/benefits', methods=['GET'])
 def get_benefits():
     response = {}
-    name = request.args.get('name')
-    queryset = session.query(Employee).filter(func.lower(Employee.name) == name.lower()).all()
-    for employee in queryset:
-        response['name'] = employee.benefit_cost
-    response = jsonify(response)
-    response.headers.add('Access-Control-Allow-Origin', '*')
-    return response, status.HTTP_200_OK
+    try:
+        name = request.args.get('name')
+        queryset = session.query(Employee).filter(func.lower(Employee.name) == name.lower()).all()
+        for employee in queryset:
+            response['name'] = employee.benefit_cost
+        response = jsonify(response)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response, status.HTTP_200_OK
+    except Exception as e:
+        response['status'] = 'Error occurred: %s' % str(e)
+        response = jsonify(response)
+        response.headers.add('Access-Control-Allow-Origin', '*')
+        return response, status.HTTP_500_INTERNAL_SERVER_ERROR
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=8080, debug=True, threaded=True)

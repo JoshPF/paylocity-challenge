@@ -21,9 +21,3 @@ services:
             - MYSQL_USER=root
             - MYSQL_ROOT_PASSWORD=changeme
             - MYSQL_DATABASE=db
-    
-    webapp:
-        build: ./frontend
-        image: webapp
-        ports:
-            - '80:80'

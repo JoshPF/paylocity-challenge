@@ -11,13 +11,12 @@ function calculate() {
     console.log('Calculating total benefits cost for employee: ', employeeName)
 
     benefitTotal += individualBenefits(employeeName, benefitTotal, false);
-    console.log(benefitTotal)
 
     for( var i = 0; i < numOfDependents; i++ ) {
         var dependentName = document.getElementById(`dependent${i}`).value;
         benefitTotal += individualBenefits(dependentName, benefitTotal, true);
-        console.log(benefitTotal)
     }
+    console.log(`benefit total: ${benefitTotal}`)
     document.getElementById("total").innerHTML = benefitTotal;
 
     $.ajax({
@@ -25,7 +24,6 @@ function calculate() {
         type: 'POST',
         success: function(data) {
             console.log(JSON.stringify(data.name))
-            document.getElementById("searchTotal").innerHTML = data.name; 
         },
         error: function (xhr, ajaxOptions, thrownError) {
             console.log(xhr.status);
