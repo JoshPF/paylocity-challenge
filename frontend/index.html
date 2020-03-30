@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script type="text/javascript" src="./js/script.js"></script>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+        <meta charset="utf-8"/>
+    </head>
+    <body>
+        <span>
+            Employee Name: <input id = "employeeName" placeholder = "Enter an Employee's Name">
+        </span>
+        <br/>
+        <div id = "dependentDiv">
+            <span>Number of Dependents: </span>
+            <span>
+                <input id = "numDependents" placeholder = "">
+                <button onclick="createTextBoxes()" id = "dependentBtn">Add Fields</button>
+            </span>
+        </div>
+        
+        <container id = "dependentContainer"></container>
+
+        <br/><br/>
+        
+        <div id="benefits total">
+            <span>Total Benefits for Employee: </span>
+            <span id = "total"></span>
+        </div>
+
+        <br/><hr><br/>
+
+        <div id="get employee">
+            <span>Get Benefit Total For an Employee: </span>
+            <input id = "employeeNameSearch" placeholder = "Enter an Employee's Name">
+            <button onclick="searchEmployee()" id = "search">Search</button>
+            <br/>
+            <span>Total Benefits: </span>
+            <span id = "benefitTotal"></span>
+        </div>
+    </body>
+</html>

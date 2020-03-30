@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+    employee-benefits:
+        build: .
+        image: 'employee-benefits'
+        container_name: employee-benefits
+        ports:
+            - '8080:8080'
+        depends_on:
+            - db
+        environment:
+            - MYSQL_USER=root
+            - MYSQL_ROOT_PASSWORD=changeme
+            - MYSQL_DATABASE=db
+
+    db:
+        image: mariadb:10.4
+        container_name: db
+        environment:
+            - MYSQL_USER=root
+            - MYSQL_ROOT_PASSWORD=changeme
+            - MYSQL_DATABASE=db
+    
+    webapp:
+        build: ./frontend
+        image: webapp
+        ports:
+            - '80:80'
