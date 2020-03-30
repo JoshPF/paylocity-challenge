@@ -20,19 +20,6 @@ function calculate() {
     }
     document.getElementById("total").innerHTML = benefitTotal;
 
-    $.ajax({
-        url: `http://localhost:8080/api/employees/add?name=${employeeName}&benefit_cost=${benefitTotal}`,
-        type: 'POST',
-        success: function(data) {
-            console.log(JSON.stringify(data.name))
-            document.getElementById("searchTotal").innerHTML = data.name; 
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            console.log(xhr.status);
-            console.log(thrownError);
-        }
-    }); 
-
     document.getElementById('employeeName').value = ""
     for( var i = 0; i < numOfDependents; i++ ) {
         document.getElementById(`dependent${i}`).value = "";
@@ -54,7 +41,7 @@ function createTextBoxes() {
     for (var i = 0; i < numOfDependents; i++) {
         container.innerHTML += `<br/><input id = \"dependent${i}\" placeholder = \"Name of Dependent\"><br/>`;
     }
-    container.innerHTML += `<button onclick=\"calculate()\" id = \"employeeBtn\">Add Employee</button>`;
+    container.innerHTML += `<button onclick=\"calculate()\" id = \"employeeBtn\">Preview Benefit Costs</button>`;
     document.getElementById("numDependents").value = "";
 }
 
@@ -69,25 +56,4 @@ function individualBenefits(name, isDependent) {
     }
     console.log(`benefits for individual ${name} are ${benefitCost} `);
     return benefitCost;
-}
-
-function searchEmployee() {
-    var employeeName = document.getElementById("employeeNameSearch").value;
-    $.ajax({
-        url: `http://localhost:8080/api/employee/benefits?name=${employeeName}`,
-        type: 'GET',
-        success: function(data) {
-            console.log(JSON.stringify(data.name))
-            if( data.name === undefined ) {
-                alert("No records exist for this Employee yet.")
-                document.getElementById("employeeNameSearch").value = "";
-                return;
-            }
-            document.getElementById("benefitTotal").innerHTML = data.name; 
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            console.log(xhr.status);
-            console.log(thrownError);
-        }
-    });
 }
